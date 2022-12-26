@@ -3,8 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Dataset
+*.sql
+*.sqlite3
+
 # C extensions
 *.so
+
+# Models
+model/
+models/
 
 # Distribution / packaging
 .Python
