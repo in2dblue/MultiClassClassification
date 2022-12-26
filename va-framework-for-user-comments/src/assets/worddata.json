@@ -1,0 +1,79 @@
+[
+    {
+      "text": "Deutschland",
+      "frequency": 63
+    },
+    {
+      "text": "Wohlstand",
+      "frequency": 61
+    },
+    {
+      "text": "Diesel",
+      "frequency": 47
+    },
+    {
+      "text": "Geld",
+      "frequency": 36
+    },
+    {
+      "text": "Merkel",
+      "frequency": 29
+    },
+    {
+      "text": "Armut",
+      "frequency": 15
+    },
+    {
+      "text": "EU",
+      "frequency": 24
+    },
+    {
+      "text": "USA",
+      "frequency": 24
+    },
+    {
+      "text": "Verbot",
+      "frequency": 22
+    },
+    {
+      "text": "China",
+      "frequency": 22
+    },
+    {
+      "text": "Fußball",
+      "frequency": 12
+    },
+    {
+      "text": "Geld",
+      "frequency": 23
+
+    },
+    {
+      "text": "WM",
+      "frequency": 21
+    },
+    {
+      "text": "CSU",
+      "frequency": 21
+    },
+    {
+      "text": "CDU",
+      "frequency": 20
+    },
+    {
+      "text": "VW",
+      "frequency": 36
+    },
+    {
+      "text": "Audi",
+      "frequency": 19
+    },
+    {
+      "text": "BMW",
+      "frequency": 19
+    },
+    {
+      "text": "Hamburg",
+      "frequency": 27
+    }
+  ]

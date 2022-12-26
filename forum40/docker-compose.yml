@@ -1,0 +1,67 @@
+version: '2'
+services:
+    reverseproxy:
+        build: 
+            context: ./reverseproxy
+            dockerfile: Dockerfile
+        depends_on:
+            - vue
+            - flask
+            - meta
+            - embedding
+        ports:
+            - 443:8081
+            - 80:8080
+        restart: always
+    vue:
+        build:
+            context: ./frontend-demo
+            dockerfile: Dockerfile
+    flask:
+        build:
+            context: ./backend-demo
+            dockerfile: Dockerfile
+        volumes:
+            - ./backend-demo:/usr/src/app
+            - ./backend-demo/models:/usr/src/app/models
+        depends_on:
+            - postgres
+    meta:
+        build:
+            context: ./metacomment-service
+            dockerfile: Dockerfile
+        volumes:
+            - ./metacomment-service:/app
+        links:      
+            - postgres
+    postgres:
+        image: "postgres:11.5"
+        shm_size: 1g
+        volumes:
+            - postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: omp
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - 5432:5432
+#    classification:
+#        build:
+#            context: ./classification-service
+#            dockerfile: Dockerfile
+#        volumes:
+#            - ./classification-service:/app
+#            - ./classification-service/models:/app/models
+#        depends_on:
+#            - postgres
+    embedding:
+        build:
+            context: ./embedding-service
+            dockerfile: Dockerfile
+        volumes:
+            - ./embedding-service:/app
+            - ./embedding-service/model:/app/model
+        depends_on:
+            - postgres
+volumes:
+    postgres:

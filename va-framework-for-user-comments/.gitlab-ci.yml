@@ -1,0 +1,34 @@
+# .gitlab-ci.yaml
+stages:
+    - dockerize
+    - deploy
+
+variables:
+ DOCKER_HOST: "tcp://localhost:2375"
+ DOCKER_REGISTRY: "docker-hub.informatik.haw-hamburg.de"
+# DOCKER_CACHE: "nexus.informatik.haw-hamburg.de"
+ SERVICE_NAME: "va-framework-for-user-comments"
+
+create_image:
+ stage: dockerize
+ image: docker-hub.informatik.haw-hamburg.de/icc/docker-dind:stable-dind
+ services:
+   - docker-hub.informatik.haw-hamburg.de/icc/docker-dind:stable-dind
+ script:
+# Wer mehr ueber caching-Strategien wissen möchte muss sich an icc@informatik.haw-hamburg.de wenden. 
+#   - docker login -u $NEXUS_USER -p $NEXUS_PW $DOCKER_CACHE
+   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $DOCKER_REGISTRY
+   - docker build -t $SERVICE_NAME:latest .
+   - docker tag $SERVICE_NAME:latest $DOCKER_REGISTRY/$CI_PROJECT_NAMESPACE/$SERVICE_NAME:$CI_PIPELINE_ID
+   - docker tag $SERVICE_NAME:latest $DOCKER_REGISTRY/$CI_PROJECT_NAMESPACE/$SERVICE_NAME:latest
+   - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAMESPACE/$SERVICE_NAME:$CI_PIPELINE_ID
+   - docker push $DOCKER_REGISTRY/$CI_PROJECT_NAMESPACE/$SERVICE_NAME:latest
+
+deploy image:
+  environment:
+    name: ICC-K8s
+  stage: deploy
+  image: $DOCKER_REGISTRY/icc/kubectl:v1.10.5
+  script:
+  - sed "s/$DOCKER_REGISTRY\/$CI_PROJECT_NAMESPACE\/$SERVICE_NAME/$DOCKER_REGISTRY\/$CI_PROJECT_NAMESPACE\/$SERVICE_NAME:$CI_PIPELINE_ID/g" deploy.yaml > deploy_new.yaml
+  - kubectl apply -f deploy_new.yaml

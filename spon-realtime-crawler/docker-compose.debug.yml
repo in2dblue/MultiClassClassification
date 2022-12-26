@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  spon-realtime-crawler:
+    image: spon-realtime-crawler
+    build:
+      context: .
+      dockerfile: Dockerfile

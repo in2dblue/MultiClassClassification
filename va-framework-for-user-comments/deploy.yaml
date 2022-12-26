@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: va-framework-for-user-comments
+  name: va-framework-for-user-comments
+spec:
+  selector:
+    matchLabels:
+      service: va-framework-for-user-comments
+  template:
+    metadata:
+      labels:
+        service: va-framework-for-user-comments
+    spec:
+      containers:
+      - image: docker-hub.informatik.haw-hamburg.de/forum40/va-framework-for-user-comments
+        name: va-framework-for-user-comments
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+      imagePullSecrets:
+      - name: va-tool
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: va-framework-for-user-comments
+  name: va-framework-for-user-comments
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    service: va-framework-for-user-comments
+  type: ClusterIP
